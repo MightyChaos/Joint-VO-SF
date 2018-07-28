@@ -35,7 +35,8 @@
 #include <opencv2/opencv.hpp>
 
 
-#define NUM_LABELS 24
+// #define NUM_LABELS 24
+#define NUM_LABELS 100
 
 typedef Eigen::Matrix<float, 6, 1> Vector6f;
 typedef Eigen::Matrix<float, 2, 6> JacobianT;
@@ -84,9 +85,9 @@ public:
 	Eigen::Array44f f_mask;											//Convolutional kernel used to build the image pyramid
 
     //Velocities, transformations and poses
-	Eigen::Matrix4f T_clusters[NUM_LABELS];					//Rigid transformations estimated for each cluster
+	Eigen::Matrix4f T_clusters[NUM_LABELS];					//Rigid transformations est(int)(1.5*input_height*input_width)imated for each cluster
 	Eigen::Matrix4f T_odometry;								//Rigid transformation of the camera motion (odometry)
-	Vector6f twist_odometry, twist_level_odometry;			//Twist encoding the odometry (accumulated and local for the pyramid level)	
+	Vector6f twist_odometry, twist_level_odometry;			//Twist encoding the odometry (accumulated and local for the pyramid level)
 	mrpt::poses::CPose3D cam_pose, cam_oldpose;				//Estimated camera poses (current and prev)
 
 	//Parameters
@@ -98,7 +99,10 @@ public:
 	unsigned int image_level, level;			//Aux variables
 
 
-    VO_SF(unsigned int res_factor);
+    // VO_SF(unsigned int res_factor);
+	VO_SF(unsigned int res_factor, float fx = 1.4*640, float fy = 1.4*640, 
+		 unsigned int input_width=640, unsigned int input_height=480);
+    void init(unsigned int res_factor, float fx, float fy, unsigned int input_width, unsigned int input_height);
     void createImagePyramid();					//Create image pyramids (intensity and depth)
     void warpImages();							//Fast warping (last image towards the prev one)
     void warpImagesParallel();
@@ -123,21 +127,21 @@ public:
 	unsigned int max_iter_irls;				//Max number of iterations for the IRLS solver
 	unsigned int max_iter_per_level;		//Max number of complete iterations for every level of the pyramid
 	float k_photometric_res;				//Weight of the photometric residuals (against geometric ones)
-	float irls_chi2_decrement_threshold;	//Convergence threshold for the IRLS solver (change in chi2)	
-	float irls_delta_threshold;				//Convergence threshold for the IRLS solver (change in the solution)	
+	float irls_chi2_decrement_threshold;	//Convergence threshold for the IRLS solver (change in chi2)
+	float irls_delta_threshold;				//Convergence threshold for the IRLS solver (change in the solution)
 	SolveForMotionWorkspace ws_foreground, ws_background;		//Structures for efficient solver
 
 	//Estimate rigid motion for a set of pixels (given their indices)
-	void solveMotionForIndices(std::vector<std::pair<int, int> > const&indices, Vector6f &twist, SolveForMotionWorkspace &ws, bool is_background);	
+	void solveMotionForIndices(std::vector<std::pair<int, int> > const&indices, Vector6f &twist, SolveForMotionWorkspace &ws, bool is_background);
 	void solveMotionDynamicClusters();			//Estimate motion of dynamic clusters
 	void solveMotionStaticClusters();			//Estimate motion of static clusters
     void solveMotionAllClusters();				//Estimate motion after knowing the segmentation
 	void solveRobustOdometryCauchy();			//Estimate robust odometry before knowing the segmentation
 
-	
+
 
     //					Geometric clustering
-    //--------------------------------------------------------------   
+    //--------------------------------------------------------------
 	std::vector<Eigen::MatrixXi> labels;											//Integer non-smooth labelling
     std::vector<Eigen::Matrix<float, NUM_LABELS+1, Eigen::Dynamic> > label_funct;	//Indicator funtions for the continuous labelling
 	Eigen::Matrix<float, 3, NUM_LABELS> kmeans;										//Centers of the KMeans clusters
@@ -146,7 +150,7 @@ public:
 
 	void createLabelsPyramidUsingKMeans();				//Create the label pyramid
 	void initializeKMeans();							//Initialize KMeans by uniformly dividing the image plane
-	void kMeans3DCoord();								//Segment the scene in clusters using the 3D coordinates of the points				
+	void kMeans3DCoord();								//Segment the scene in clusters using the 3D coordinates of the points
     void computeRegionConnectivity();					//Compute connectivity graph (which cluster is contiguous to which)
     void smoothRegions(unsigned int image_level);		//Smooth/blend clusters for a better scene flow estimation
 
@@ -186,11 +190,13 @@ public:
 	//--------------------------------------------------------------
 	void loadImagePairFromFiles(std::string files_dir, unsigned int res_factor);
 	bool loadImageFromSequence(std::string files_dir, unsigned int index, unsigned int res_factor);
-	void saveFlowAndSegmToFile(std::string files_dir);	
+	void saveFlowAndSegmToFile(std::string files_dir);
+	void loadImagePair(Eigen::MatrixXf im1, Eigen::MatrixXf depth1, 
+		Eigen::MatrixXf im2, Eigen::MatrixXf depth2,
+		unsigned int res_factor);
+	void loadImage(Eigen::MatrixXf im, Eigen::MatrixXf depth, unsigned int res_factor);
+
 
 };
 
 #endif
-
-
-

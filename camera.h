@@ -22,7 +22,3 @@ public:
     void loadFrame(Eigen::MatrixXf &depth_wf, Eigen::MatrixXf &color_wf);
     void disableAutoExposureAndWhiteBalance();
 };
-
-
-
-

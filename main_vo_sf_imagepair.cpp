@@ -29,17 +29,18 @@
 // -------------------------------------------------------------------------------
 //								Instructions:
 // Set the flag "save_results" to true if you want to save the estimated scene
-// flow and the static/dynamic segmentation 
+// flow and the static/dynamic segmentation
 // -------------------------------------------------------------------------------
 
 int main()
-{	
-	const bool save_results = false;
+{
+	const bool save_results = true;
 	const unsigned int res_factor = 2;
-	VO_SF cf(res_factor);
+	VO_SF cf(res_factor, 1.4*704, 1.4*704, 704, 384);
 
 	//Set image dir
-	std::string dir = ".../data/opening door/";
+	std::string dir = "/home/chaoyang/deepSLAM/";
+		// std::string dir = "../data/person standing/";
 
 	//Load images and create both pyramids
 	cf.loadImagePairFromFiles(dir, res_factor);
@@ -61,4 +62,3 @@ int main()
 	mrpt::system::os::getch();
 	return 0;
 }
-

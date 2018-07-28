@@ -25,7 +25,7 @@
 #include <joint_vo_sf.h>
 
 
-// -------------------------------------------------------------------------------
+// ------------------------------------------------------------------loadImagePairFromFiles-------------
 //								Instructions:
 // You need to click on the window of the 3D Scene to be able to interact with it.
 // 'n' - Load new frame and solve
@@ -34,15 +34,17 @@
 // -------------------------------------------------------------------------------
 
 int main()
-{	
+{
     const unsigned int res_factor = 2;
-	VO_SF cf(res_factor);
+	// VO_SF cf(res_factor);
+	VO_SF cf(res_factor, 1.4*704, 1.4*704, 704, 384);
 
 
 	//Set first image to load, decimation factor and the sequence dir
 	unsigned int im_count = 1;
 	const unsigned int decimation = 1; //5
-	std::string dir = ".../data/sequence people moving/"; 
+	// std::string dir = "../data/sequence people moving/";
+	std::string dir = "/home/chaoyang/deepSLAM/";
 
 	//Load image and create pyramid
 	cf.loadImageFromSequence(dir, im_count, res_factor);
@@ -54,9 +56,9 @@ int main()
 	//Auxiliary variables
 	int pushed_key = 0;
 	bool continuous_exec = false, stop = false;
-	
+
 	while (!stop)
-	{	
+	{
         if (cf.window.keyHit())
             pushed_key = cf.window.getPushedKey();
         else
@@ -77,13 +79,13 @@ int main()
 		case 's':
 			continuous_exec = !continuous_exec;
 			break;
-			
+
 		//Close the program
 		case 'e':
 			stop = true;
 			break;
 		}
-	
+
 		if ((continuous_exec)&&(!stop))
 		{
 			im_count += decimation;
@@ -96,4 +98,3 @@ int main()
 
 	return 0;
 }
-
