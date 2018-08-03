@@ -120,6 +120,7 @@ void VO_SF::kMeans3DCoord()
 {
 	//Kmeans are computed at one resolution lower than the max (to speed the process up)
 	const unsigned int max_level = round(log2(width/cols));
+	// const unsigned int max_level = 0;
     const unsigned int lower_level = max_level+1;
 	const unsigned int iter_kmeans = 10;
 
@@ -277,6 +278,7 @@ void VO_SF::kMeans3DCoord()
 void VO_SF::computeRegionConnectivity()
 {
     const unsigned int max_level = round(log2(width/cols));
+	// const unsigned int max_level = 0;
     const float dist2_threshold = square(0.03f*120.f/float(rows));
 
 	//Refs

@@ -103,7 +103,8 @@ void VO_SF::init(unsigned int res_factor, float fx, float fy,
 
 	//Resize matrices in a "pyramid"
     const unsigned int pyr_levels = round(log2(width/cols)) + ctf_levels;
-    intensity.resize(pyr_levels); intensity_old.resize(pyr_levels); intensity_inter.resize(pyr_levels);
+    // const unsigned int pyr_levels = ctf_levels;
+	intensity.resize(pyr_levels); intensity_old.resize(pyr_levels); intensity_inter.resize(pyr_levels);
     depth.resize(pyr_levels); depth_old.resize(pyr_levels); depth_inter.resize(pyr_levels);
     xx.resize(pyr_levels); xx_inter.resize(pyr_levels); xx_old.resize(pyr_levels);
     yy.resize(pyr_levels); yy_inter.resize(pyr_levels); yy_old.resize(pyr_levels);
@@ -336,7 +337,6 @@ void VO_SF::createImagePyramid()
     //The number of levels of the pyramid does not match the number of levels used
     //in the odometry computation (because we sometimes want to finish with lower resolutions)
     unsigned int pyr_levels = round(log2(width/cols)) + ctf_levels;
-
     //Generate levels
     for (unsigned int i = 0; i<pyr_levels; i++)
     {
@@ -1059,7 +1059,6 @@ void VO_SF::run_VO_SF(bool create_image_pyr)
 			unsigned int s = pow(2.f,int(ctf_levels-(i+1)));
 			cols_i = cols/s; rows_i = rows/s;
 			image_level = ctf_levels - i + round(log2(width/cols)) - 1;
-
 			//1. Perform warping
 			if (i == 0)
 			{
@@ -1150,7 +1149,6 @@ void VO_SF::run_VO_SF(bool create_image_pyr)
 void VO_SF::computeSceneFlowFromRigidMotions()
 {
 	const unsigned int repr_level = round(log2(width/cols));
-
     //Compute the inverse rigid transformation associated to the labels
     Matrix4f inv_trans[NUM_LABELS];
     for (unsigned int l=0; l<NUM_LABELS; l++)

@@ -20,11 +20,24 @@ INCLUDE_DIRECTORIES(${TBB_INCLUDE_DIRS})
 
 
 
+#ADD_LIBRARY(vo_sf_lib
+#	joint_vo_sf.h
+#	structs_parallelization.h
+#	kmeans.cpp
+#	visualization.cpp
+#	solver.cpp
+#	segmentation_background.cpp
+#	camera.cpp
+#	camera.h
+#	datasets.cpp
+#	datasets.h
+#	normal_equation.cpp
+#	opencv_ext.cpp)
+
 ADD_LIBRARY(vo_sf_lib
 	joint_vo_sf.h
 	structs_parallelization.h
 	kmeans.cpp
-	visualization.cpp
 	solver.cpp
 	segmentation_background.cpp
 	camera.cpp
@@ -38,12 +51,12 @@ ADD_LIBRARY(vo_sf_lib
 #	${MRPT_LIBS}
 #	${OpenNI2_LIBRARY}
 #	${OpenCV_LIBS}
-#    ${TBB_LIBRARIES})
+#   ${TBB_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(vo_sf_lib
 	${MRPT_LIBS}
 	${OpenCV_LIBS}
-    ${TBB_LIBRARIES})
+   ${TBB_LIBRARIES})
 
 
 #To run online with an RGB-D camera
@@ -57,17 +70,19 @@ TARGET_LINK_LIBRARIES(vo_sf_lib
 
 
 #To test it with individual Image pairs
-ADD_EXECUTABLE(VO-SF-ImagePair 	main_vo_sf_imagepair.cpp)
-TARGET_LINK_LIBRARIES(VO-SF-ImagePair	vo_sf_lib)
+#ADD_EXECUTABLE(VO-SF-ImagePair 	main_vo_sf_imagepair.cpp)
+#TARGET_LINK_LIBRARIES(VO-SF-ImagePair	vo_sf_lib)
 
 
 #To test it with pre-recorded RGB-D sequences
-ADD_EXECUTABLE(VO-SF-ImageSeq 	main_vo_sf_imageseq.cpp)
-TARGET_LINK_LIBRARIES(VO-SF-ImageSeq 	vo_sf_lib)
+#ADD_EXECUTABLE(VO-SF-ImageSeq 	main_vo_sf_imageseq.cpp)
+#TARGET_LINK_LIBRARIES(VO-SF-ImageSeq 	vo_sf_lib)
 
 
 add_subdirectory(pybind11)
 pybind11_add_module(cmake_example vo_sf_py.cpp)
+set_target_properties(vo_sf_lib PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+TARGET_LINK_LIBRARIES(cmake_example vo_sf_lib)
 
 # Set optimized building:
 IF(CMAKE_COMPILER_IS_GNUCXX)

@@ -172,17 +172,17 @@ public:
 
     //						3D Scene
 	//--------------------------------------------------------------
-	mrpt::gui::CDisplayWindow3D		window;
-	mrpt::opengl::COpenGLScenePtr	scene;
+	// mrpt::gui::CDisplayWindow3D		window;
+	// mrpt::opengl::COpenGLScenePtr	scene;
 	Eigen::MatrixXf labels_image[3], backg_image[3];
 
-	void initializeSceneCamera();
-	void initializeSceneDatasets();
-	void initializeSceneImageSeq();
-	void updateSceneCamera(bool clean_sf);
-	void updateSceneDatasets(const mrpt::poses::CPose3D &gt, const mrpt::poses::CPose3D &gt_old);
-	void updateSceneImageSeq();
-	void createImagesOfSegmentations();
+	// void initializeSceneCamera();
+	// void initializeSceneDatasets();
+	// void initializeSceneImageSeq();
+	// void updateSceneCamera(bool clean_sf);
+	// void updateSceneDatasets(const mrpt::poses::CPose3D &gt, const mrpt::poses::CPose3D &gt_old);
+	// void updateSceneImageSeq();
+	// void createImagesOfSegmentations();
 
 
 
