@@ -47,7 +47,7 @@ double fx, double fy)
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(cmake_example, m) {
+PYBIND11_MODULE(jvo_util, m) {
 
     // NDArrayConverter::init_numpy();
 

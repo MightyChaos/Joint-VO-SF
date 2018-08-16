@@ -80,9 +80,9 @@ TARGET_LINK_LIBRARIES(vo_sf_lib
 
 
 add_subdirectory(pybind11)
-pybind11_add_module(cmake_example vo_sf_py.cpp)
+pybind11_add_module(jvo_util vo_sf_py.cpp)
 set_target_properties(vo_sf_lib PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
-TARGET_LINK_LIBRARIES(cmake_example vo_sf_lib)
+TARGET_LINK_LIBRARIES(jvo_util vo_sf_lib)
 
 # Set optimized building:
 IF(CMAKE_COMPILER_IS_GNUCXX)
